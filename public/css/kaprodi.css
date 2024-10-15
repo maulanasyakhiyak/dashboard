@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    @apply flex
+}
+.sidebar{
+    @apply h-screen w-80 bg-blue-600 px-8
+}
+.content{
+    @apply flex-1 h-screen overflow-auto
+}
+
+.sidebar-header{
+    @apply w-full h-20 flex font-bold text-white justify-center items-center border-b-2 text-xl border-blue-300
+}
+
+.sidebar-warp{
+    @apply my-4
+}
+.sidebar-item{
+    @apply mb-2
+}
+
+.sidebar-item a{
+    @apply py-2 block w-full text-blue-200 font-medium transition-all duration-500 hover:text-white
+}
+.sidebar-item i{
+    @apply pe-4
+}
+
+.content-header{
+    @apply flex justify-between items-center p-4 h-20 border-b-2 border-gray-300 shadow-md
+}
+
+.table-container{
+    @apply p-4 m-4 border rounded-lg shadow-md
+}
+
+.table-header{
+    @apply flex justify-between items-center py-2
+}
+
+.button-blue{
+    @apply p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-xs
+}
+.button-green{
+    @apply p-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 text-xs
+}
+
+.input-form{
+   @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+}

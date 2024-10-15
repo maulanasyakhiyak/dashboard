@@ -6,10 +6,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\MahasiswaController;
 
-// Route::get('/', function(){
-//     return redirect('/login');
-// });
-
 Route::get('/', function(){
     return redirect('login');
 });

@@ -1,5 +1,14 @@
 @extends('dashboard.KaprodiLayout')
 
+@section('header')
+<p class="text-2xl bold">Hallo {{ Auth::user()->name }} , Anda adalah {{ Auth::user()->role }}</p>
+
+<form action="{{ route('logout') }}" method="post">
+    @csrf
+    <button type="submit" class="button">Logout</button>
+</form>
+@endsection
+
 @section('content')
 
 
