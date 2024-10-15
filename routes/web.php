@@ -1,11 +1,9 @@
 <?php
 
-use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\KaprodiController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MahasiswaController;
 
 // Route::get('/', function(){
