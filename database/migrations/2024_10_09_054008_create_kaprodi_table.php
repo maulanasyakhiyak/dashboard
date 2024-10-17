@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('id')->primary();
             $table->unsignedInteger('user_id');
             $table->string('kode_dosen');
-            $table->integer('nip') -> unique();
+            $table->integer('nip')->unique();
             $table->string('name');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,9 +22,6 @@ class User extends Authenticatable
 
     // Kolom yang disembunyikan
     protected $hidden = [
-        'password'
+        'password',
     ];
-
-
 }
-

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('dosen', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->unsignedInteger('user_id');
-            $table->integer('kelas_id')->nullable();
+            $table->unsignedInteger('kelas_id')->nullable();
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('set null');
             $table->string('kode_dosen');
-            $table->integer('nip') -> unique();
+            $table->integer('nip')->unique();
             $table->string('name');
             $table->timestamps();
 

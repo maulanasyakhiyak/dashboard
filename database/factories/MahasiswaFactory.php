@@ -13,7 +13,7 @@ class MahasiswaFactory extends Factory
     public function definition()
     {
         $user = User::factory()->create([
-            'role' => 'mahasiswa'
+            'role' => 'mahasiswa',
         ]);
 
         return [

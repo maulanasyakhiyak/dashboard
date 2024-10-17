@@ -4,6 +4,7 @@ export default {
       "./resources/**/*.blade.php",
       "./resources/**/*.js",
       "./resources/**/*.vue",
+       "./node_modules/flowbite/**/*.js"
     ],
     theme: {
         container: {
@@ -11,5 +12,7 @@ export default {
             padding: '1rem',
           },
     },
-    plugins: [],
+    plugins: [
+      require('flowbite/plugin')
+    ],
   }

@@ -19,6 +19,12 @@ return new class extends Migration
             $table->string('role');
             $table->timestamps();
         });
+        Schema::create('kelas', function (Blueprint $table) {
+            $table->unsignedInteger('id')->primary();
+            $table->string('name');
+            $table->integer('jumlah');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,5 +33,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('kelas');
     }
 };

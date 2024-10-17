@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Kaprodi;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,13 +11,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class KaprodiFactory extends Factory
 {
-
     protected $model = Kaprodi::class;
 
     public function definition(): array
     {
         $user = User::factory()->create([
-            'role' => 'kaprodi'
+            'role' => 'kaprodi',
         ]);
 
         return [
