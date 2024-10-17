@@ -16,7 +16,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <h1 class="mb-4 text-4xl font-bold" id="header" >Edit kelas {{$data->name}}</h1>
 
     {{-- table mahasiswa --}}
-    <div class="">Daftar Mahasiswa</div>
+    <div class="mb-2 text-md font-medium text-gray-900">Daftar Mahasiswa</div>
     <div class="relative overflow-x-auto  border sm:rounded-lg mb-3">
         <table class="w-full table-auto border-collapse text-sm text-left rtl:text-right text-gray-700">
             <thead class="text-xs text-gray-300 border-b uppercase bg-gray-700">
@@ -53,7 +53,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                         {{$mhs->tanggal_lahir}}
                     </td>
                     <td class="p-3 text-center">
-                        <a href="" class="p-2"><i class="fa-solid fa-trash"></i></a>
+                        <form action="{{ route('deleteMhsFromClass', $mhs->id) }}" method="post">
+                            @csrf
+                             @method('DELETE')
+                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');"><i class="fa-solid fa-trash"></i></button>
+                        </form>
                     </td>
                 </tr>
                 @empty
@@ -106,5 +110,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+    @else
+    <div class="alert alert-success">
+        {{ session('error') }}
+    </div>
+    @endif
 @endsection

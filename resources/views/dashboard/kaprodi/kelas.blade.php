@@ -43,14 +43,19 @@
                                 {{ $dat->name }}
                             </td>
                             <td class="p-3 ">
-                                {{ $dat->dosen->first()->name ?? 'null'}}
+                                {{ $dat->dosen->first()->name ?? 'null' }}
                             </td>
                             <td class="p-3 text-center">
                                 {{ $dat->jumlah }}
                             </td>
                             <td class="p-3 text-center">
-                                <a href="{{ route('editKelasKaprodi',$dat->id)  }}" class="p-2"><i class="fa-regular fa-pen-to-square"></i></a>
-                                <a href="" class="p-2"><i class="fa-solid fa-trash"></i></a>
+                                <a href="{{ route('editKelasKaprodi', $dat->id) }}" class="p-2"><i
+                                        class="fa-regular fa-pen-to-square"></i></a>
+                                <form action="{{ route('procces-delete-kelas', $dat->id) }}" method="post" class="inline p-2">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');"><i class="fa-solid fa-trash"></i></button>
+                                </form>
                             </td>
 
                         </tr>

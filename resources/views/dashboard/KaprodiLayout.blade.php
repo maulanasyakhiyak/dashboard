@@ -46,7 +46,7 @@
         <header class="header-content flex justify-between items-center h-20 bg-white  px-4 drop-shadow-md">
             @yield('header')
         </header>
-
+        
         <div class="content-sec">
             @yield('content')
         </div>

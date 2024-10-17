@@ -6,9 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect('login');
-});
+Route::redirect('/', '/login', 301);
 
 Route::middleware(['cekrole:kaprodi', 'auth'])->group(function () {
     Route::get('/kaprodi', [KaprodiController::class, 'index'])->name('Dashboardkaprodi');
@@ -20,10 +18,17 @@ Route::middleware(['cekrole:kaprodi', 'auth'])->group(function () {
     Route::get('/search', [KaprodiController::class, 'search']);
     Route::post('/procces/tambah-kelas', [KaprodiController::class, 'proccesTambahKelas'])->name('procces-tambah-kelas');
     Route::post('/procces/update-kelas', [KaprodiController::class, 'proccesUpdateKelas'])->name('procces-update-kelas');
+    Route::delete('/delete/delete-kelas/{id}', [KaprodiController::class, 'proccesDeleteKelas'])->name('procces-delete-kelas');
+    Route::delete('/delete/delete-mahasiswa-from-class/{id}', [KaprodiController::class, 'deleteMhsFromClass'])->name('deleteMhsFromClass');
+
+    // DOSEN
+    Route::post('/kaprodi/dosen/tambah', [KaprodiController::class, 'tambah_dosen'])->name('tambah_dosen');
+    Route::post('/kaprodi/dosen/edit/{kode_dosen}', [KaprodiController::class, 'edit_dosen'])->name('edit_dosen');
+    Route::delete('/kaprodi/dosen/delete/{id}', [KaprodiController::class, 'delete_dosen'])->name('delete_dosen');
 });
 
-Route::middleware(['cekrole:dosen'])->group(function () {
-    Route::get('/dosen', [DosenController::class, 'index'])->name('DashboardDosen')->middleware('auth');
+Route::middleware(['cekrole:dosen', 'auth'])->group(function () {
+    Route::get('/dosen', [DosenController::class, 'index'])->name('DashboardDosen');
 });
 
 Route::middleware(['cekrole:mahasiswa'])->group(function () {
