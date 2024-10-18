@@ -82,8 +82,14 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             @enderror
         </div>
         <div class="mb-6">
-            <label for="dosen_input" class="block mb-2 text-md font-medium text-gray-900">Dosen - {{ $data->dosen->first()->name }} : {{ $data->dosen->first()->kode_dosen }}</label>
-            <input type="text" id="dosen_input" name="dosen_input" data-value="{{$data->dosen->first()->kode_dosen}}" class="w-full rounded-lg" placeholder="Masukkan Kode dosen"  value="{{$data->dosen->first()->kode_dosen}}" required />
+            @if ($data->dosen->isNotEmpty())
+            <label for="dosen_input" class="block mb-2 text-md font-medium text-gray-900">Dosen - {{ $data->dosen->first()->name}} : {{ $data->dosen->first()->kode_dosen }}</label>
+            <input type="text" id="dosen_input" name="dosen_input" data-value="{{$data->dosen->first()->kode_dosen}} " class="w-full rounded-lg" placeholder="Masukkan Kode dosen"  value="{{$data->dosen->first()->kode_dosen}}" required />
+            @else
+            <label for="dosen_input" class="block mb-2 text-md font-medium text-gray-900">Dosen - Tidak ada dosen</label>
+            <input type="text" id="dosen_input" name="dosen_input" data-value="" class="w-full rounded-lg" placeholder="Masukkan Kode dosen"  value="" required />
+                
+            @endif
             @error('dosen_input')
             <small class="text-red-500">dosen tidak ditemukan</small>
             @enderror

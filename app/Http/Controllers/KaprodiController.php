@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\kelas;
 use App\Models\Mahasiswa;
-// use App\Models\User;
+use App\Models\User;
+use Faker\Factory as faker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as faker;
 
 class KaprodiController extends Controller
 {
@@ -21,9 +21,7 @@ class KaprodiController extends Controller
         $kelas->save();
     }
 
-    private function createUser($for){
-        
-    }
+    private function createUser($for) {}
 
     // PUBLIC FUNCTION
     public function index()
@@ -40,14 +38,15 @@ class KaprodiController extends Controller
 
     public function dosen()
     {
-        $data = Dosen::paginate(4);
+        $data = Dosen::paginate(5);
 
         return view('dashboard.kaprodi.dosen', compact('data'));
     }
 
     public function mahasiswa()
     {
-        return view('dashboard.kaprodi.mahasiswa');
+        $data = Mahasiswa::with('kelas')->paginate(5);
+        return view('dashboard.kaprodi.mahasiswa',compact('data'));
     }
 
     public function TambahKelas()
@@ -207,15 +206,15 @@ class KaprodiController extends Controller
             $mhs = Mahasiswa::where('id', $id)->first();
             $kelas_id = $mhs->kelas_id;
 
-            
             $mhs->update([
                 'kelas_id' => null,
                 'updated_at' => now(),
             ]);
-            
+
             $this->updateJumlah($kelas_id);
 
             DB::commit();
+
             return redirect()->back()->with('success', 'Item berhasil dihapus.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus item: '.$e->getMessage());
@@ -223,36 +222,83 @@ class KaprodiController extends Controller
     }
 
     // DOSEN
-    
-    public function edit_dosen(Request $request , $kode_dosen){
-        $data =  $request->input('name');
+
+    public function edit_dosen(Request $request, $kode_dosen)
+    {
+        $data = $request->input('name');
         DB::beginTransaction();
         try {
             Dosen::where('kode_dosen', $kode_dosen)->update([
                 'name' => $data,
-                'updated_at' => now()
+                'updated_at' => now(),
             ]);
             DB::commit();
-            return redirect()->back()->with('success','berhasil update' . $data);
+
+            return redirect()->back()->with('success', 'berhasil update'.$data);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error',' error pada update data ' . $e);
+            return redirect()->back()->with('error', ' error pada update data '.$e);
         }
-        
+
     }
 
-    public function delete_dosen($id){
-        return redirect()->back()->with('success','telah sampai controller dengan id = '. $id);
+    public function delete_dosen($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $dosen = Dosen::find($id);
+
+            User::destroy( $dosen->user_id);
+
+            $dosen->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', ' error pada delete data '.$e);
+
+        }
+
+        return redirect()->back()->with('success', 'telah sampai controller dengan id = '.$id);
     }
 
-    public function tambah_dosen(Request $req){
-        // $faker = faker::create();
-        // $nwDos = $req->input('new_name');
-        // Dosen::create([
-        //     'id' => $this->$faker->unique()->numberBetween(1000, 9999),
-        //     'user_id' => $user->id,
-        //     'kode_dosen' => $this->$faker->unique()->numerify('DOS######'),
-        //     'nip' => $this->$faker->unique()->numerify('######'),
-        //     'name' => $nwDos,
-        // ]);
+    public function tambah_dosen(Request $req)
+    {
+        $faker = faker::create();
+
+        $req->validate(([
+            'email_input'=>'required|email'
+        ]));
+        $newDosen = $req->input('new_name');
+        $email = $req->input('email_input');
+
+        DB::beginTransaction();
+        try {
+            $user_id = $faker->unique()->numberBetween(1000, 9999);
+
+            User::create([
+                'id'=>$user_id,
+                'name'=>$newDosen,
+                'email'=>$email,
+                'password' => bcrypt('password'),
+                'role' => 'dosen'
+            ]);
+
+            Dosen::create([
+                'id' => rand(1000, 9999),
+                'user_id' => $user_id,
+                'kode_dosen' =>$faker->unique()->numerify('DOS######'),
+                'nip'=>$faker->unique()->numerify('######'),
+                'name'=>$newDosen,
+                
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', ' error pada delete data '.$e);
+
+        }
+
+        return redirect()->back()->with('success', 'data dibuat contrroler ='.$newDosen.':'.$email);
     }
 }

@@ -6,21 +6,19 @@ body{
     @apply flex
 }
 
-
-
 .sidebar{
     @apply h-screen w-80 bg-blue-600 px-8
 }
 .content{
-    @apply flex-1 h-screen overflow-auto
+    @apply flex-1 h-screen overflow-auto bg-gray-100
 }
 
 .sidebar-header{
-    @apply w-full h-20 flex font-bold text-white justify-center items-center border-b-2 text-xl border-blue-300
+    @apply w-full h-16 flex font-bold text-white justify-center items-center border-b-2 text-xl border-blue-300
 }
 
 .sidebar-warp{
-    @apply my-4
+    @apply my-4 border-b border-blue-400
 }
 .sidebar-item{
     @apply mb-2
@@ -34,7 +32,7 @@ body{
 }
 
 .content-sec{
-    @apply p-4
+    @apply p-6
 }
 
 .content-header{
@@ -55,5 +53,4 @@ body{
 .button-green{
     @apply p-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 text-sm
 }
-
 
