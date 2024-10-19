@@ -20,22 +20,22 @@
             <h2>DASHBOARD ADMIN</h2>
         </div>
         
-        <ul class="sidebar-warp">
+        <ul class="sidebar-warp my-4">
             <li class="sidebar-item {{ request()->routeIs('Dashboardkaprodi') ? 'active' : '' }}">
                 <a href="{{ route('Dashboardkaprodi') }}"><i class="fa-solid fa-gauge pe-4"></i>Dashboard</a>
             </li>
         </ul>
 
-        <form action="{{ route('logout') }}" method="post">
+        <form action="{{ route('logout') }}" method="post" class="absolute bottom-10">
             @csrf
-            <button type="submit" class="sidebar-item"><i class="fa-solid fa-arrow-right-from-bracket pe-4"></i>Logout</button>
+            <button type="submit" class="sidebar-item text-white"><i class="fa-solid fa-arrow-right-from-bracket pe-4"></i>Logout</button>
         </form>
     </div>
 
     <div class="content">
 
-        <header class="header-content flex justify-between items-center h-16 bg-white  px-4 drop-shadow-md">
-            <p class="text-lg bold">Hallo {{ Auth::user()->name }} , Anda adalah {{ Auth::user()->role }}</p>
+        <header class="header-content flex justify-between items-center h-16 bg-white  px-6 drop-shadow-md">
+@yield('header')
         </header>
 
         <div class="content-sec">
@@ -47,7 +47,8 @@
 
 </body>
 <script src="{{ asset('lib/jquery.min.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
 @yield('js')
 
 </html>

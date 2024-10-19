@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('lib/fontawesome/css/solid.css') }}">
     @yield('css')
     <title>Dashboard</title>
+
 </head>
 
 <body>
@@ -20,7 +21,7 @@
         <div class="sidebar-header">
             <h2>DASHBOARD ADMIN</h2>
         </div>
-        
+
         <ul class="sidebar-warp">
             <li class="sidebar-item {{ request()->routeIs('Dashboardkaprodi') ? 'active' : '' }}">
                 <a href="{{ route('Dashboardkaprodi') }}"><i class="fa-solid fa-gauge pe-4"></i>Dashboard</a>
@@ -47,7 +48,7 @@
         <header class="header-content flex justify-between items-center h-20 bg-white  px-4 drop-shadow-md">
             @yield('header')
         </header>
-        
+
         <div class="content-sec">
             @yield('content')
         </div>
@@ -58,6 +59,9 @@
 
 </body>
 <script src="{{ asset('lib/jquery.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@include('sweetalert::alert')
 @yield('js')
+
 
 </html>

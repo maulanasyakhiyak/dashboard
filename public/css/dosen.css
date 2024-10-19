@@ -3,23 +3,20 @@
 @tailwind utilities;
 
 body{
-    @apply flex
+    @apply flex 
 }
 
 .sidebar{
     @apply h-screen w-80 bg-blue-600 px-8
 }
 .content{
-    @apply flex-1 h-screen overflow-auto bg-gray-100
+    @apply flex-1 h-screen  bg-gray-100 relative
 }
 
 .sidebar-header{
     @apply w-full h-16 flex font-bold text-white justify-center items-center border-b-2 text-xl border-blue-300
 }
 
-.sidebar-warp{
-    @apply my-4 border-b border-blue-400
-}
 .sidebar-item{
     @apply mb-2
 }
@@ -36,7 +33,7 @@ body{
 }
 
 .content-header{
-    @apply flex justify-between items-center p-4 h-20 border-b-2 border-gray-300 shadow-md
+    @apply flex justify-between items-center p-4 h-20 border-b-2 border-gray-300 shadow-md relative
 }
 
 .table-container{

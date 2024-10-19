@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Dosen;
 use App\Models\kelas;
 use App\Models\Mahasiswa;
-use App\Models\User;
 use Faker\Factory as faker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KaprodiController extends Controller
 {
@@ -116,7 +117,7 @@ class KaprodiController extends Controller
         $dosen = Dosen::where('kode_dosen', $request->dosen_input)->first();
         $dosen->kelas_id = $id;
         $dosen->save();
-
+        Alert::success('Hore!', 'Post Created Successfully');
         return redirect()->back()->with('success', 'berhasil tambah data');
     }
 
@@ -233,7 +234,7 @@ class KaprodiController extends Controller
                 'updated_at' => now(),
             ]);
             DB::commit();
-
+            Alert::success('Hore!', 'Post Created Successfully');
             return redirect()->back()->with('success', 'berhasil update'.$data);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', ' error pada update data '.$e);

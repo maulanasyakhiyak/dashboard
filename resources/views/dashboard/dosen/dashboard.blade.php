@@ -1,96 +1,260 @@
 @extends('dashboard.DosenLayout')
 
+@section('js')
+    <script>
+        $('#keluar_form').on('submit', function(e) {
+            e.preventDefault(); // Mencegah form submit secara otomatis
+
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: "Kamu tidak bisa mengembalikan perubahan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika user mengklik 'Ya, hapus!', form akan dikirim
+                    this.submit(); // Melanjutkan submit form
+                }
+            });
+        });
+    </script>
+@endsection
+
+@section('header')
+    <p class="text-base bold">Hallo {{ Auth::user()->name }} , Anda adalah {{ Auth::user()->role }} di kelas
+        {{ $data->kelas->name }}</p>
+
+
+
+    <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification"
+        class="relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-400"
+        type="button">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
+            <path
+                d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
+        </svg>
+
+        <div
+            class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900">
+        </div>
+    </button>
+
+    <!-- Dropdown menu -->
+    <div id="dropdownNotification"
+        class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700"
+        aria-labelledby="dropdownNotificationButton">
+        <div
+            class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white">
+            Notifications
+        </div>
+        <div class="divide-y divide-gray-100 dark:divide-gray-700">
+            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div class="flex-shrink-0">
+                    <img class="rounded-full w-11 h-11" src="/docs/images/people/profile-picture-1.jpg" alt="Jese image">
+                    <div
+                        class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-blue-600 border border-white rounded-full dark:border-gray-800">
+                        <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 18 18">
+                            <path
+                                d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z" />
+                            <path
+                                d="M4.439 9a2.99 2.99 0 0 1 2.742 1.8 1.977 1.977 0 0 0 3.638 0A2.99 2.99 0 0 1 13.561 9H17.8L15.977.783A1 1 0 0 0 15 0H3a1 1 0 0 0-.977.783L.2 9h4.239Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-full ps-3">
+                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">New message from <span
+                            class="font-semibold text-gray-900 dark:text-white">Jese Leos</span>: "Hey, what's up? All set
+                        for the presentation?"</div>
+                    <div class="text-xs text-blue-600 dark:text-blue-500">a few moments ago</div>
+                </div>
+            </a>
+            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div class="flex-shrink-0">
+                    <img class="rounded-full w-11 h-11" src="/docs/images/people/profile-picture-2.jpg" alt="Joseph image">
+                    <div
+                        class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-gray-900 border border-white rounded-full dark:border-gray-800">
+                        <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 18">
+                            <path
+                                d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-full ps-3">
+                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
+                            class="font-semibold text-gray-900 dark:text-white">Joseph Mcfall</span> and <span
+                            class="font-medium text-gray-900 dark:text-white">5 others</span> started following you.</div>
+                    <div class="text-xs text-blue-600 dark:text-blue-500">10 minutes ago</div>
+                </div>
+            </a>
+            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div class="flex-shrink-0">
+                    <img class="rounded-full w-11 h-11" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image">
+                    <div
+                        class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-red-600 border border-white rounded-full dark:border-gray-800">
+                        <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 18">
+                            <path
+                                d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-full ps-3">
+                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
+                            class="font-semibold text-gray-900 dark:text-white">Bonnie Green</span> and <span
+                            class="font-medium text-gray-900 dark:text-white">141 others</span> love your story. See it and
+                        view more stories.</div>
+                    <div class="text-xs text-blue-600 dark:text-blue-500">44 minutes ago</div>
+                </div>
+            </a>
+            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div class="flex-shrink-0">
+                    <img class="rounded-full w-11 h-11" src="/docs/images/people/profile-picture-4.jpg" alt="Leslie image">
+                    <div
+                        class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-green-400 border border-white rounded-full dark:border-gray-800">
+                        <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 18">
+                            <path
+                                d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-full ps-3">
+                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
+                            class="font-semibold text-gray-900 dark:text-white">Leslie Livingston</span> mentioned you in a
+                        comment: <span class="font-medium text-blue-500" href="#">@bonnie.green</span> what do you
+                        say?</div>
+                    <div class="text-xs text-blue-600 dark:text-blue-500">1 hour ago</div>
+                </div>
+            </a>
+            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div class="flex-shrink-0">
+                    <img class="rounded-full w-11 h-11" src="/docs/images/people/profile-picture-5.jpg" alt="Robert image">
+                    <div
+                        class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-purple-500 border border-white rounded-full dark:border-gray-800">
+                        <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 14">
+                            <path
+                                d="M11 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm8.585 1.189a.994.994 0 0 0-.9-.138l-2.965.983a1 1 0 0 0-.685.949v8a1 1 0 0 0 .675.946l2.965 1.02a1.013 1.013 0 0 0 1.032-.242A1 1 0 0 0 20 12V2a1 1 0 0 0-.415-.811Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-full ps-3">
+                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
+                            class="font-semibold text-gray-900 dark:text-white">Robert Brown</span> posted a new video:
+                        Glassmorphism - learn how to implement the new design trend.</div>
+                    <div class="text-xs text-blue-600 dark:text-blue-500">3 hours ago</div>
+                </div>
+            </a>
+        </div>
+        <a href="#"
+            class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+            <div class="inline-flex items-center ">
+                <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                    <path
+                        d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                </svg>
+                View all
+            </div>
+        </a>
+    </div>
+@endsection
+
 @section('content')
     @if ($data->kelas == null)
         Tidak ada kelas
     @else
-        <div class="w-full flex justify-between items-center mb-3 mt-1">
+        <div class="w-full flex justify-between items-center mb-3">
             <div>
                 <h3 class="text-lg font-semibold text-slate-800">Data Kelas</h3>
-                <p class="text-slate-500">{{$data->kelas->name}}</p>
+                <p class="text-slate-500">{{ $data->kelas->name }}</p>
             </div>
             <div class="ml-3 flex gap-2">
-                <a href="" class="bg-green-400 py-3 px-4 text-white shadow rounded-md">+ Masukan Mahasiswa Baru</a>
-                <a href="" class="bg-blue-400 w-12 h-12 text-white shadow rounded-full flex items-center justify-center relative">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="absolute text-red-400 top-3 right-4 transform translate-x-1/2 -translate-y-1/2 font-bold text-xs">2</span>
-                </a>    
+                <a href="" class="bg-green-400 py-3 px-4 text-white text-sm  shadow rounded-md">+ Masukan Mahasiswa
+                    Baru</a>
             </div>
-            
         </div>
 
-        <div class="relative flex flex-col w-full h-full overflow-hidden text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
-            <table class="w-full text-left table-auto min-w-max">
-                <thead>
-                    <tr>
-                        <th class="p-4 ps-6 border-b border-slate-200 bg-slate-200">
-                            <p class="text-sm font-medium leading-none text-slate-700 ">
-                                No
-                            </p>
-                        </th>
-                        <th class="p-4 border-b border-slate-200 bg-slate-200">
-                            <p class="text-sm font-medium leading-none text-slate-700">
-                                Nama
-                            </p>
-                        </th>
-                        <th class="p-4 border-b border-slate-200 bg-slate-200">
-                            <p class="text-sm font-medium leading-none text-slate-700">
-                                NIM
-                            </p>
-                        </th>
-                        <th class="p-4 border-b border-slate-200 bg-slate-200">
-                            <p class="text-sm font-medium leading-none text-slate-700">
-                                Tempat Lahir
-                            </p>
-                        </th>
-                        <th class="p-4 border-b border-slate-200 bg-slate-200">
-                            <p class="text-sm font-medium leading-none text-slate-700">
-                                Tanggal Lahir
-                            </p>
-                        </th>
-                        <th class="p-4 border-b border-slate-200 bg-slate-200 pe-6 w-44">
-                            <p class="text-sm font-medium leading-none text-slate-700">
-                                Action
-                            </p>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($mhs as $key => $item)
-                        <tr class="hover:bg-slate-50 border-b border-slate-200">
-                            <td class="p-4 ps-6 py-5">
-                                <p class="block font-semibold text-sm text-slate-800">{{ $mhs->firstItem() + $key }}</p>
-                            </td>
-                            <td class="p-4 py-5">
-                                <p class="text-sm text-slate-500">{{ $item->name }}</p>
-                            </td>
-                            <td class="p-4 py-5">
-                                <p class="text-sm text-slate-500">{{ $item->nim }}</p>
-                            </td>
-                            <td class="p-4 py-5">
-                                <p class="text-sm text-slate-500">{{ $item->tempat_lahir }}</p>
-                            </td>
-                            <td class="p-4 py-5">
-                                <p class="text-sm text-slate-500">{{ $item->tanggal_lahir }}</p>
-                            </td>
-                            <td class="p-4 py-5 pe-6 flex gap-4">
-                                <form action="" class="inline">
-                                    <button class="text-red-500">Keluarkan</button>
-                                </form>
-                                <form action="" class="inline">
-                                    <button class="text-slate-500">Edit</button>
-                                </form>
-                                </div>
-                            </td>
-                        </tr>
 
-                    @empty
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="px-4 py-3">
-                {{ $mhs->links() }}
-            </div>
+        <table class="w-full text-left table-auto min-w-max bg-white rounded-lg overflow-hidden">
+            <thead>
+                <tr>
+                    <th class="p-4 ps-6 border-b border-slate-100 bg-blue-100">
+                        <p class="text-sm font-medium leading-none text-slate-700 ">
+                            No
+                        </p>
+                    </th>
+                    <th class="p-4 border-b border-slate-100 bg-blue-100">
+                        <p class="text-sm font-medium leading-none text-slate-700">
+                            Nama
+                        </p>
+                    </th>
+                    <th class="p-4 border-b border-slate-100 bg-blue-100">
+                        <p class="text-sm font-medium leading-none text-slate-700">
+                            NIM
+                        </p>
+                    </th>
+                    <th class="p-4 border-b border-slate-100 bg-blue-100">
+                        <p class="text-sm font-medium leading-none text-slate-700">
+                            Tempat Lahir
+                        </p>
+                    </th>
+                    <th class="p-4 border-b border-slate-100 bg-blue-100">
+                        <p class="text-sm font-medium leading-none text-slate-700">
+                            Tanggal Lahir
+                        </p>
+                    </th>
+                    <th class="p-4 border-b border-slate-100 bg-blue-100 pe-6 w-44">
+                        <p class="text-sm font-medium leading-none text-slate-700">
+                            Action
+                        </p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($mhs as $key => $item)
+                    <tr class="hover:bg-blue-50 border-b border-slate-200">
+                        <td class="p-4 ps-6 py-5">
+                            <p class="block font-semibold text-sm text-slate-800">{{ $mhs->firstItem() + $key }}</p>
+                        </td>
+                        <td class="p-4 py-5">
+                            <p class="text-sm text-slate-500">{{ $item->name }}</p>
+                        </td>
+                        <td class="p-4 py-5">
+                            <p class="text-sm text-slate-500">{{ $item->nim }}</p>
+                        </td>
+                        <td class="p-4 py-5">
+                            <p class="text-sm text-slate-500">{{ $item->tempat_lahir }}</p>
+                        </td>
+                        <td class="p-4 py-5">
+                            <p class="text-sm text-slate-500">{{ $item->tanggal_lahir }}</p>
+                        </td>
+                        <td class="p-4 py-5 pe-6 flex gap-4">
+                            <form action="" class="inline" id="keluar_form">
+                                @csrf
+                                <button class="text-red-500">Keluarkan</button>
+                            </form>
+                            <form action="" class="inline">
+                                @csrf
+                                <button class="text-slate-500">Edit</button>
+                            </form>
+
+                        </td>
+                    </tr>
+
+                @empty
+                @endforelse
+            </tbody>
+        </table>
+        <div class="px-4 py-3">
+            {{ $mhs->links() }}
+        </div>
         </div>
     @endif
 @endsection
