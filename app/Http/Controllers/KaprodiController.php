@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Dosen;
 use App\Models\kelas;
 use App\Models\Mahasiswa;
+use App\Models\User;
 use Faker\Factory as faker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +21,6 @@ class KaprodiController extends Controller
         $kelas->jumlah = $jumlahmhs ?? 0;
         $kelas->save();
     }
-
-    private function createUser($for) {}
 
     // PUBLIC FUNCTION
     public function index()
@@ -47,7 +45,8 @@ class KaprodiController extends Controller
     public function mahasiswa()
     {
         $data = Mahasiswa::with('kelas')->paginate(5);
-        return view('dashboard.kaprodi.mahasiswa',compact('data'));
+
+        return view('dashboard.kaprodi.mahasiswa', compact('data'));
     }
 
     public function TambahKelas()
@@ -118,6 +117,7 @@ class KaprodiController extends Controller
         $dosen->kelas_id = $id;
         $dosen->save();
         Alert::success('Hore!', 'Post Created Successfully');
+
         return redirect()->back()->with('success', 'berhasil tambah data');
     }
 
@@ -235,6 +235,7 @@ class KaprodiController extends Controller
             ]);
             DB::commit();
             Alert::success('Hore!', 'Post Created Successfully');
+
             return redirect()->back()->with('success', 'berhasil update'.$data);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', ' error pada update data '.$e);
@@ -249,13 +250,14 @@ class KaprodiController extends Controller
         try {
             $dosen = Dosen::find($id);
 
-            User::destroy( $dosen->user_id);
+            User::destroy($dosen->user_id);
 
             $dosen->delete();
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+
             return redirect()->back()->with('error', ' error pada delete data '.$e);
 
         }
@@ -268,7 +270,7 @@ class KaprodiController extends Controller
         $faker = faker::create();
 
         $req->validate(([
-            'email_input'=>'required|email'
+            'email_input' => 'required|email',
         ]));
         $newDosen = $req->input('new_name');
         $email = $req->input('email_input');
@@ -278,24 +280,25 @@ class KaprodiController extends Controller
             $user_id = $faker->unique()->numberBetween(1000, 9999);
 
             User::create([
-                'id'=>$user_id,
-                'name'=>$newDosen,
-                'email'=>$email,
+                'id' => $user_id,
+                'name' => $newDosen,
+                'email' => $email,
                 'password' => bcrypt('password'),
-                'role' => 'dosen'
+                'role' => 'dosen',
             ]);
 
             Dosen::create([
                 'id' => rand(1000, 9999),
                 'user_id' => $user_id,
-                'kode_dosen' =>$faker->unique()->numerify('DOS######'),
-                'nip'=>$faker->unique()->numerify('######'),
-                'name'=>$newDosen,
-                
+                'kode_dosen' => $faker->unique()->numerify('DOS######'),
+                'nip' => $faker->unique()->numerify('######'),
+                'name' => $newDosen,
+
             ]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+
             return redirect()->back()->with('error', ' error pada delete data '.$e);
 
         }

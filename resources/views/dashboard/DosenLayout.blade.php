@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/dosen.css'])
     <link rel="stylesheet" href="{{ asset('lib/fontawesome/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/fontawesome/css/brands.css') }}">
     <link rel="stylesheet" href="{{ asset('lib/fontawesome/css/solid.css') }}">
     @yield('css')
+    
     <title>Dashboard</title>
 </head>
 
@@ -35,12 +37,13 @@
     <div class="content">
 
         <header class="header-content flex justify-between items-center h-16 bg-white  px-6 drop-shadow-md">
-@yield('header')
+            @yield('header')
         </header>
 
         <div class="content-sec">
             @yield('content')
         </div>
+        
     </div>
 
 
@@ -48,7 +51,8 @@
 </body>
 <script src="{{ asset('lib/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-
+@include('sweetalert::alert')
 @yield('js')
+
 
 </html>

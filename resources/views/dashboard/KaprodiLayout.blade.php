@@ -60,6 +60,7 @@
 </body>
 <script src="{{ asset('lib/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('js/kaprodi/kelas/edit.js') }}"></script>
 @include('sweetalert::alert')
 @yield('js')
 

@@ -50,7 +50,7 @@ body{
 .button-green{
     @apply 
     p-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 text-sm
-    disabled:bg-white
+    disabled:bg-emerald-300 
 }
 .button-red{
     @apply p-3 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm
