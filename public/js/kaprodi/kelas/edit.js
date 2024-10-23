@@ -25,17 +25,6 @@ function deleteCard(id) {
 $(document).ready(function () {
   console.log(dataDump);
 
-  // CHECKING INPUT
-  var inputChanged = false;
-  $("#form-edit input").on("input", function () {
-    inputChanged = true;
-  });
-
-  $(window).on("beforeunload", function () {
-    if (inputChanged) {
-      return "Ada perubahan yang belum disimpan. Apakah Anda yakin ingin meninggalkan halaman?";
-    }
-  });
 
   // INPUTMASK
   var dosen = new Inputmask("DOS999999");
@@ -126,7 +115,7 @@ $(document).ready(function () {
         if(data['status'] === 'success'){
           alert(data['message']);
           location.reload()
-        }else{
+        }else if(data['status'] === 'error'){
           alert(data['message']);
           location.reload()
         }

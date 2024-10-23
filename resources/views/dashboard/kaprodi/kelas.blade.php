@@ -43,10 +43,10 @@
                                 {{ $dat->name }}
                             </td>
                             <td class="p-3 ">
-                                {{ $dat->dosen->first()->name ?? 'null' }}
+                                {{ $dat->dosen->name ?? 'null' }}
                             </td>
                             <td class="p-3 text-center">
-                                {{ $dat->jumlah }}
+                                {{$dat->jumlah}} / {{ $dat->MaxClass() }}
                             </td>
                             <td class="p-3 text-center">
                                 <a href="{{ route('editKelasKaprodi', $dat->id) }}" class="p-2"><i

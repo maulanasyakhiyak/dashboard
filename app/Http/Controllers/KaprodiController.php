@@ -16,10 +16,13 @@ class KaprodiController extends Controller
     // PRIVATE FUNCTION
     private function updateJumlah($id)
     {
-        $jumlahmhs = Mahasiswa::where('kelas_id', '=', $id)->count();
         $kelas = kelas::findOrFail($id);
-        $kelas->jumlah = $jumlahmhs ?? 0;
-        $kelas->save();
+        $kelas->jumlah = Mahasiswa::where('kelas_id', $id)->count() ?? 0;
+        if ($kelas->CanAdd()) {
+            $kelas->save();
+        } else {
+            throw new \Exception('Jumlah Mahasiswa melebihi batas');
+        }
     }
 
     // PUBLIC FUNCTION
@@ -136,7 +139,10 @@ class KaprodiController extends Controller
                 'updated_at' => now(),
             ]);
 
-            if (Dosen::where('kode_dosen', $newDosen)->first()) {
+            $dosenBaru = Dosen::where('kode_dosen', $newDosen)->first();
+
+            // Jika dosen baru tidak ditemukan
+            if ($dosenBaru !== $oldDosen) {
 
                 Dosen::where('kode_dosen', $oldDosen)->update([
                     'kelas_id' => null,
@@ -147,19 +153,13 @@ class KaprodiController extends Controller
                     'kelas_id' => $idkelas,
                     'updated_at' => now(),
                 ]);
-            } else {
-                DB::rollback();
-
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Dosen not found',
-                ]);
             }
 
             if (! empty($idmhs)) {
                 foreach ($idmhs as $id) {
                     Mahasiswa::where('id', $id)->update(['kelas_id' => $idkelas]);
                 }
+
                 $this->updateJumlah($idkelas);
 
                 DB::commit();
@@ -183,7 +183,7 @@ class KaprodiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan saat menambahkan kelas ke mahasiswa: '.$e->getMessage(),
-            ], 500);
+            ]);
         }
     }
 
@@ -215,8 +215,9 @@ class KaprodiController extends Controller
             $this->updateJumlah($kelas_id);
 
             DB::commit();
+            Alert::success('item berhasil dihapus');
 
-            return redirect()->back()->with('success', 'Item berhasil dihapus.');
+            return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus item: '.$e->getMessage());
         }

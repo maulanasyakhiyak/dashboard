@@ -21,7 +21,6 @@ class Mahasiswa extends Model
         'edit',
     ];
 
-    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,5 +29,10 @@ class Mahasiswa extends Model
     public function kelas()
     {
         return $this->belongsTo(kelas::class);
+    }
+
+    public function requestMhs()
+    {
+        return $this->hasOne(requestmodel::class);
     }
 }

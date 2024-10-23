@@ -16,10 +16,12 @@ class requestmodel extends Model
         'kelas_id',
         'mahasiswa_id',
         'keterangan',
+        'created_at',
+        'updated_at',
     ];
 
     public function mahasiswa()
     {
-        return $this->hasOne(Mahasiswa::class);
+        return $this->belongsTo(Mahasiswa::class);
     }
 }

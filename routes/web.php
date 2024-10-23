@@ -34,10 +34,14 @@ Route::middleware(['cekrole:dosen', 'auth'])->group(function () {
     Route::post('/dosen/editMahasiswa/procces/{kelas_id}', [DosenController::class, 'editMahasiswaProcces'])->name('editMahasiswaProcces');
     Route::post('/dosen/emit/mahasiswa/{id}', [DosenController::class, 'emitMahasiswa'])->name('emitMahasiswa');
     Route::post('/dosen/tambahMahasiswa/{kelas_id}', [DosenController::class, 'tambahMahasiswa'])->name('tambahMahasiswa');
+    Route::post('/dosen/req/accept/{id}', [DosenController::class, 'accept_req'])->name('accept_req');
+    Route::post('/dosen/req/reject/{id}', [DosenController::class, 'reject_req'])->name('reject_req');
 });
 
 Route::middleware(['cekrole:mahasiswa', 'auth'])->group(function () {
     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('DashboardMahasiswa');
+    Route::get('/mahasiswa/edit', [MahasiswaController::class, 'editMahasiswa'])->name('mahasiswa.editMahasiswa')->middleware('cek_request');
+    Route::post('/mahasiswa/edit/process', [MahasiswaController::class, 'editMahasiswaProcces'])->name('mahasiswa.editMahasiswaProcces');
     Route::post('/mahasiswa/request-edit/{id}', [MahasiswaController::class, 'requestEditMhs'])->name('requestEditMhs');
 });
 

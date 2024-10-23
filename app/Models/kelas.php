@@ -17,13 +17,30 @@ class kelas extends Model
         'jumlah',
     ];
 
+    protected $batasMaksimal = 3;
+
     public function dosen()
     {
-        return $this->hasMany(Dosen::class);
+        return $this->hasOne(Dosen::class);
     }
 
     public function mahasiswa()
     {
         return $this->hasMany(Mahasiswa::class);
+    }
+
+    public function requestKelas()
+    {
+        return $this->hasMany(requestmodel::class);
+    }
+
+    public function CanAdd()
+    {
+        return $this->jumlah <= $this->batasMaksimal;
+    }
+
+    public function MaxClass()
+    {
+        return $this->batasMaksimal;
     }
 }

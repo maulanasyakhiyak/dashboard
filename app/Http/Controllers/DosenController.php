@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\kelas;
 use App\Models\Mahasiswa;
+use App\Models\requestmodel;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,24 +17,28 @@ class DosenController extends Controller
 {
     private function updateJumlah($id)
     {
-        $jumlahmhs = Mahasiswa::where('kelas_id', '=', $id)->count();
         $kelas = kelas::findOrFail($id);
-        $kelas->jumlah = $jumlahmhs ?? 0;
-        $kelas->save();
+        $kelas->jumlah = Mahasiswa::where('kelas_id', $id)->count() ?? 0;
+        if ($kelas->CanAdd()) {
+            $kelas->save();
+        } else {
+            throw new \Exception('Jumlah Mahasiswa melebihi batas');
+        }
     }
 
     public function index()
     {
-        $dosen_id = Auth::user()->id;
-
         $data = Dosen::with(['kelas'])
-            ->where('user_id', $dosen_id)
+            ->where('user_id', Auth::id())
             ->first();
-
         $mhs = Mahasiswa::where('kelas_id', $data->kelas_id)->paginate(5);
 
-        // dd($data);
-        return view('dashboard.dosen.dashboard', compact('data', 'mhs'));
+        $req_mhs = RequestModel::with(['mahasiswa'])
+            ->whereIn('mahasiswa_id', $mhs->pluck('id'))
+            ->where('keterangan', 'process')
+            ->get();
+
+        return view('dashboard.dosen.dashboard', compact('data', 'mhs', 'req_mhs'));
     }
 
     public function emitMahasiswa($id)
@@ -70,13 +76,14 @@ class DosenController extends Controller
             ])->update([
                 'kelas_id' => $kelas_id,
             ]);
+            $this->updateJumlah($kelas_id);
             DB::commit();
             Alert::success('Hore!', 'Post Created Successfully'.$kelas_id);
 
             return redirect()->back();
         } catch (Exception $e) {
             DB::rollback();
-            Alert::error('Hore!', 'Post Created Successfully'.$e);
+            Alert::error($e->getMessage());
 
             return redirect()->back();
         }
@@ -124,5 +131,26 @@ class DosenController extends Controller
             'message' => 'data berhasil diperbaharui',
             'redirect' => route('editMahasiswa', $id),
         ]);
+    }
+
+    public function accept_req($id)
+    {
+
+        requestmodel::findOrFail($id)->update([
+            'keterangan' => 'accepted',
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Alert::success('berhasil '.$id);
+
+        return redirect()->back();
+    }
+
+    public function reject_req($id)
+    {
+        requestmodel::findOrFail($id)->delete();
+        Alert::error('berhasil '.$id);
+
+        return redirect()->back();
     }
 }

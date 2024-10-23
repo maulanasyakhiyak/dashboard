@@ -24,10 +24,11 @@
             <path
                 d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
         </svg>
-
+        @if (count($req_mhs) > 0) 
         <div
             class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900">
         </div>
+        @endif
     </button>
 
     <!-- Dropdown menu -->
@@ -39,18 +40,30 @@
             Notifications
         </div>
         <div class="divide-y divide-gray-100 dark:divide-gray-700">
+            @forelse ($req_mhs as $item)
+
             <div class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <div class="w-full">
-                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">ManDELA ASDASDAD Request to Edit</div>
+                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span class="font-bold">{{$item->mahasiswa->name}}</span> Meminta Edit Data</div>
                     <div class="grid grid-cols-2 gap-2 mb-1.5">
-                        <button class="button-green p-2">Accept</button>
-                        <button class="button-red p-2">Reject</button>
+                        <form action="{{ route('accept_req',$item->id) }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="button-green w-full p-2">Accept</button>
+                        </form>
+                        <form action="{{ route('reject_req',$item->id) }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="button-red  w-full p-2">Reject</button>
+                        </form> 
                     </div>
-                    <div class="text-xs text-blue-600 dark:text-blue-500">a few moments ago</div>
+                    <div class="text-xs text-blue-600 dark:text-blue-500">{{$item->created_at->diffForHumans()}}</div>
                 </div>
             </div>
+
+                @empty
+                    
+                @endforelse
         </div>
-        <a href="#"
+        <a href=""
             class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
             <div class="inline-flex items-center ">
                 <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
