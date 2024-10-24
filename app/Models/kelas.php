@@ -19,6 +19,13 @@ class kelas extends Model
 
     protected $batasMaksimal = 3;
 
+    public static function generateId()
+    {
+        $id = (int) (now()->format('dmy').rand(10, 99));
+
+        return $id;
+    }
+
     public function dosen()
     {
         return $this->hasOne(Dosen::class);

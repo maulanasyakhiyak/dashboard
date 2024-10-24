@@ -21,6 +21,13 @@ class Mahasiswa extends Model
         'edit',
     ];
 
+    public static function generateId()
+    {
+        $id = (int) (now()->format('y').rand(100, 999));
+
+        return $id;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

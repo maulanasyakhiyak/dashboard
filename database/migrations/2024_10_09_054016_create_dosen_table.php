@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dosen', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('kelas_id')->nullable();
+            $table->unsignedBigInteger('kelas_id')->nullable();
             $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('set null');
             $table->string('kode_dosen');
             $table->integer('nip')->unique();

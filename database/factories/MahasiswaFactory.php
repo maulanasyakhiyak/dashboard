@@ -19,7 +19,7 @@ class MahasiswaFactory extends Factory
         return [
             'id' => $this->faker->unique()->numberBetween(1000, 9999),
             'user_id' => $user->id,
-            'nim' => $this->faker->unique()->numerify('######'),
+            'nim' => Mahasiswa::generateId(),
             'name' => $user->name,
             'tanggal_lahir' => $this->faker->dateTimeBetween('-20 years', '-18 years'),
             'tempat_lahir' => $this->faker->city(),

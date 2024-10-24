@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->unsignedInteger('id')->primary();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('kelas_id')->nullable();
+            $table->unsignedBigInteger('kelas_id')->nullable();
             $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('set null');
 
             $table->integer('nim')->unique();

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::create('kelas', function (Blueprint $table) {
-            $table->unsignedInteger('id')->primary();
+            $table->unsignedBigInteger('id')->primary();
             $table->string('name');
             $table->integer('jumlah');
             $table->timestamps();

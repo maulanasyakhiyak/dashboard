@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('request', function (Blueprint $table) {
             $table->integer('id')->primary();
-            $table->unsignedInteger('kelas_id');
+            $table->unsignedBigInteger('kelas_id');
             $table->unsignedInteger('mahasiswa_id');
             $table->string('keterangan');
             $table->timestamps();

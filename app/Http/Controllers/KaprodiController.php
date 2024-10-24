@@ -6,6 +6,7 @@ use App\Models\Dosen;
 use App\Models\kelas;
 use App\Models\Mahasiswa;
 use App\Models\User;
+use App\Services\KaprodiService;
 use Faker\Factory as faker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,16 +14,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class KaprodiController extends Controller
 {
-    // PRIVATE FUNCTION
-    private function updateJumlah($id)
+    protected $KaprodiService;
+
+    public function __construct(KaprodiService $KaprodiService)
     {
-        $kelas = kelas::findOrFail($id);
-        $kelas->jumlah = Mahasiswa::where('kelas_id', $id)->count() ?? 0;
-        if ($kelas->CanAdd()) {
-            $kelas->save();
-        } else {
-            throw new \Exception('Jumlah Mahasiswa melebihi batas');
-        }
+        $this->KaprodiService = $KaprodiService;
     }
 
     // PUBLIC FUNCTION
@@ -104,21 +100,16 @@ class KaprodiController extends Controller
 
     public function proccesTambahKelas(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'nama_kelas' => 'required|min:3',
             'dosen_input' => 'required|exists:dosen,kode_dosen',
         ]);
 
-        $id = rand(100000, 999999);
-        $kelas = new kelas;
-        $kelas->id = $id;
-        $kelas->name = $request->nama_kelas;
-        $kelas->jumlah = 0;
-        $kelas->save();
+        $this->KaprodiService->addClass(
+            $data['nama_kelas'],
+            $data['dosen_input']
+        );
 
-        $dosen = Dosen::where('kode_dosen', $request->dosen_input)->first();
-        $dosen->kelas_id = $id;
-        $dosen->save();
         Alert::success('Hore!', 'Post Created Successfully');
 
         return redirect()->back()->with('success', 'berhasil tambah data');
@@ -131,6 +122,11 @@ class KaprodiController extends Controller
         $oldDosen = $request->input('oldDosen');
         $idkelas = $request->input('idKelas');
         $idmhs = $request->input('newMhs');
+
+        $data = $request->validate([
+            'newclass' => 'required|min:3',
+            'newDosen' => 'required|exists:dosen,kode_dosen',
+        ]);
 
         DB::beginTransaction();
         try {
@@ -212,7 +208,7 @@ class KaprodiController extends Controller
                 'updated_at' => now(),
             ]);
 
-            $this->updateJumlah($kelas_id);
+            $this->KaprodiService->updateJumlah($kelas_id);
 
             DB::commit();
             Alert::success('item berhasil dihapus');
