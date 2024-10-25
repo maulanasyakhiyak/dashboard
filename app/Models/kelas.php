@@ -17,7 +17,7 @@ class kelas extends Model
         'jumlah',
     ];
 
-    protected $batasMaksimal = 3;
+    protected $batasMaksimal = 10;
 
     public static function generateId()
     {
